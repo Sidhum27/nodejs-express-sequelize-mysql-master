@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.open) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -39,7 +39,9 @@ exports.findAll = (req, res) => {
   const open = req.query.open;
   var condition = open ? { open: { [Op.like]: `%${open}%` } } : null;
 
-  Employee.findAll({ where: condition })
+  Employee.findAll({order: [
+    ['id', 'DESC'],
+],})
     .then(data => {
       res.send(data);
     })
@@ -69,7 +71,6 @@ exports.findOne = (req, res) => {
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-
   Employee.update(req.body, {
     where: { id: id }
   })
@@ -86,7 +87,7 @@ exports.update = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error updating Tutorial with id=" + id
+        message: "Error updating employee with id=" + id
       });
     });
 };
@@ -101,7 +102,7 @@ exports.delete = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was deleted successfully!"
+          message: "Employee was deleted successfully!"
         });
       } else {
         res.send({
