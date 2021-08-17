@@ -10,4 +10,6 @@ npm install
 node server.js
 ```
 ###WebEndPoint
+```
 ng serve
+```
